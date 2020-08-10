@@ -1,6 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+// 引入login组件
+// @代表src的别名
+// 默认会去src/views/Login下找名称为index的文件
+import Login from '@/views/Login'
 
 Vue.use(VueRouter)
 
@@ -17,6 +21,9 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+  },{
+    path:'/login',
+    component:Login
   }
 ]
 
