@@ -2,6 +2,7 @@
   <div id="app">
     <div id="nav">
     </div>
+    <!-- 一级路由渲染出口 -->
     <router-view />
   </div>
 </template>
@@ -15,13 +16,13 @@
 import request from '@/utils/request'
 
 export default {
-  mounted(){
-    // 发送axios请求
-    request({
-      url: '/getList',
-      method:'get'
-    })
-  }
+  // mounted () {
+  //   // 发送axios请求
+  //   request({
+  //     url: '/getList',
+  //     method: 'get'
+  //   })
+  // }
 }
 </script>
 
