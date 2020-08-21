@@ -26,6 +26,8 @@
 <script>
 // 引入用户登录接口的封装函数
 import { login } from "@/api/user";
+// 引入保存本地数据的模块
+import { saveData } from "@/store";
 
 export default {
   data() {
@@ -35,7 +37,6 @@ export default {
     // 效验失败:callback(new Error('错误提示信息'))返回一个错误提示信息
     // 效验成功：callback()直接执行（必须执行的函数）
     const validatepass = (rules, value, callback) => {
-      console.log(value);
       // 如果没有输入验证码，说明为空
       // 空的话弹出错误提示信息
       if (!value) {
@@ -48,7 +49,6 @@ export default {
     };
     // 判断用户是否勾选协议的自定义验证规则
     const validatepass2 = (rules, value, callback) => {
-      // console.log(value);
       if (!value) {
         callback(new Error("请勾选协议"));
       }
@@ -56,7 +56,6 @@ export default {
     };
     //手机号自定义验证规则
     const ValidateTel = (rules, value, callback) => {
-      console.log(value);
       // 如果用户输入的是非数字，提示错误信息输入的不是数字
       if (isNaN(value)) {
         callback(new Error("输入的不是数字哦"));
@@ -65,7 +64,7 @@ export default {
         callback(new Error("手机号不能超过11位数"));
       }
       callback();
-    }; 
+    };
     // 返回一个响应式数据
     return {
       form: {
@@ -94,7 +93,6 @@ export default {
       // valid代表当前所有表单项整体效验结果，如果整个表单项都效验成功，valid结果为true
       // 如果表单项有一个或者多个效验失败，valid结果为false
       this.$refs["myfrom"].validate((valid) => {
-        console.log(valid);
         if (valid) {
           // 效验成功后执行的逻辑
           this.dologin();
@@ -111,19 +109,28 @@ export default {
       this.loading = true;
       login(this.form.mobile, this.form.code)
         .then((res) => {
+          this.loading = false;
           // 登录成功给出成功提示
           this.$message({
             message: "登录成功啦",
             type: "success",
           });
-          this.loading = false;
+      
+          // 本地存储传过去的是对象格式
+          // 服务器端获取到的数据保存到本地
+          saveData(res.data.data);
+
+          // 登录成功，跳转到首页
+          this.$router.push({
+            path:'/'
+          });
         })
         .catch((error) => {
+          this.loading = false;
           // 登录失败给出警告提示
           this.$message.error({
             message: "登录失败啦",
           });
-          this.loading = false;
         });
       //优化频繁登录问题
       // 思路：发送请求之前同时开启一个load加载效果

@@ -13,7 +13,7 @@
 // request就是配置了baseURL的axios实例
 // import request from './utils/request'
 // @相当于当前目录的别名
-import request from '@/utils/request'
+// import request from '@/utils/request'
 
 export default {
   // mounted () {
